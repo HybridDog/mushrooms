@@ -171,8 +171,8 @@ for _, color in ipairs(MUSHROOMS) do
 					end
 				end
 			end
-		end
 	})
+end
 	-- PLUS_MINECRAFT_LIKE_GROW
 --^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
