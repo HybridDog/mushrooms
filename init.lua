@@ -33,15 +33,20 @@ local GROW_NORMAL_NODES = { -- for MINECRAFTLIKE GROW
 
 local function lol(node) -- ololo
 	for _, node_name in ipairs(GROW_NORMAL_NODES) do
-		if node.name == node_name then return true end
+		if node.name == node_name then
+			return true
+		end
 	end
+	return false
 end
 
 local function lol_m(node) -- ololo
 	for _, node_name in ipairs(MUSHROOMS) do
-		if node.name == "mushrooms:dirt_spored_mushroom_" .. node_name then return true end
-		return false
+		if node.name == "mushrooms:dirt_spored_mushroom_" .. node_name then
+			return true
+		end
 	end
+	return false
 end
 
 -- Nodes
@@ -50,7 +55,7 @@ minetest.register_node(":default:dirt", {
 	inventory_image = minetest.inventorycube("default_dirt.png"),
 	is_ground_content = true,
 	material = minetest.digprop_dirtlike(1.0),
-	extra_drop = 'craft "mushrooms:spores" 1',
+	extra_drop = 'craft "mushrooms:spores" 1',	--I didn't know that extra_drop exists
 	extra_drop_rarity = SPORE_DIG_RARITY,
 })
 
@@ -62,13 +67,11 @@ for _, color in ipairs(MUSHROOMS) do
 		tiles = {"mushrooms_" .. mname .. ".png"},
 		inventory_image = "mushrooms_" .. mname .. ".png",
 		paramtype = "light",
-		is_ground_content = true,
 		sunlight_propagates = true,
 		walkable = false,
 		material = minetest.digprop_constanttime(0.4),
 		furnace_burntime = -1,
-		wall_mounted = false,
-		visual_scale = 1.0,
+		wall_mounted = false,	--What does wall_mounted do?
 		selection_box = {
 			type = "fixed",
 			fixed = {-1/5, -1/2, -1/5, 1/5, 1/40, 1/5},
@@ -114,60 +117,63 @@ end-- Nodes end
 for _, color in ipairs(MUSHROOMS) do
 	mname = "mushrooms:mushroom_" .. color
 --+++++++++++++++++++++++++++++++++++++
-	if PLUS_MINECRAFT_LIKE_GROW == true then -- PLUS_MINECRAFT_LIKE_GROW
+	if PLUS_MINECRAFT_LIKE_GROW then -- PLUS_MINECRAFT_LIKE_GROW
 	minetest.register_abm({	-- WRONG GROW STYLE !!!!!!!1111111111!!!!!!!!!!!!!!!!!!!!!1111!1111111111!!!!!!11111111!
 		nodenames = mname,
 		interval = MUSHROOMS_GROW_INTERVAL,
 		chance = CHANCE,
-			action = function(pos, node, _, __)
-				local l = minetest.env:get_node_light({x = pos.x,y=pos.y+1,z=pos.z}, nil)
-				local p = pos
-				local under_node = minetest.env:get_node({x = pos.x, y = pos.y-1, z = pos.z})
-				if lol(under_node) and (l >= (NEEDED_LIGHT)) then
-					local rnd = math.random(1, 12)
-					local new_m_pos
-						if rnd == 1 then
-							new_m_pos = {x = pos.x+1, y = pos.y, z = pos.z}
-						elseif rnd == 2 then
-							new_m_pos = {x = pos.x-1, y = pos.y, z = pos.z}
-						elseif rnd == 3 then
-							new_m_pos = {x = pos.x, y = pos.y, z = pos.z+1}
-						elseif rnd == 4 then
-							new_m_pos = {x = pos.x, y = pos.y, z = pos.z-1}
-						elseif rnd == 5 then
-							new_m_pos = {x = pos.x+1, y = pos.y, z = pos.z+1}
-						elseif rnd == 6 then
-							new_m_pos = {x = pos.x-1, y = pos.y, z = pos.z+1}
-						elseif rnd == 7 then
-							new_m_pos = {x = pos.x+1, y = pos.y, z = pos.z-1}
-						elseif rnd == 8 then 
-							new_m_pos = {x = pos.x-1, y = pos.y, z = pos.z-1}
-						else return 0; end
+		action = function(pos, node, _, __)
+			local l = minetest.env:get_node_light({x = pos.x,y=pos.y+1,z=pos.z}, nil)
+			local p = pos
+			local under_node = minetest.env:get_node({x = pos.x, y = pos.y-1, z = pos.z})
+			if lol(under_node) and (l >= (NEEDED_LIGHT)) then
+				local rnd = math.random(1, 12)
+				local new_m_pos
+					if rnd == 1 then
+						new_m_pos = {x = pos.x+1, y = pos.y, z = pos.z}
+					elseif rnd == 2 then
+						new_m_pos = {x = pos.x-1, y = pos.y, z = pos.z}
+					elseif rnd == 3 then
+						new_m_pos = {x = pos.x, y = pos.y, z = pos.z+1}
+					elseif rnd == 4 then
+						new_m_pos = {x = pos.x, y = pos.y, z = pos.z-1}
+					elseif rnd == 5 then
+						new_m_pos = {x = pos.x+1, y = pos.y, z = pos.z+1}
+					elseif rnd == 6 then
+						new_m_pos = {x = pos.x-1, y = pos.y, z = pos.z+1}
+					elseif rnd == 7 then
+						new_m_pos = {x = pos.x+1, y = pos.y, z = pos.z-1}
+					elseif rnd == 8 then 
+						new_m_pos = {x = pos.x-1, y = pos.y, z = pos.z-1}
+					else
+						return 0
+					end
 
-							local try_node = minetest.env:get_node(new_m_pos)
-						--------
-							local new_m_pos_under = {x = new_m_pos.x, y = pos.y - 1, z = new_m_pos.z}
-							local try_node_under = minetest.env:get_node(new_m_pos_under)
-						--------	
+					local try_node = minetest.env:get_node(new_m_pos)
+				--------
+					local new_m_pos_under = {x = new_m_pos.x, y = pos.y - 1, z = new_m_pos.z}
+					local try_node_under = minetest.env:get_node(new_m_pos_under)
+				--------	
 
-							local new_m_pos_under_under = {x = new_m_pos.x, y = pos.y - 2, z = new_m_pos.z}
-							local try_node_under_under = minetest.env:get_node(new_m_pos_under_under)
-						--------
-							local new_m_pos_above = {x = new_m_pos.x, y = pos.y + 1, z = new_m_pos.z}
-							local try_node_above = minetest.env:get_node(new_m_pos_above)
-						--------
-							local nname = node.name
-							if (try_node.name == "air") and lol(try_node_under) then
-								minetest.env:add_node(new_m_pos, { name = nname })
-							elseif (try_node_above.name == "air") and lol(try_node) then
-								minetest.env:add_node(new_m_pos_above, { name = nname })
-							elseif (try_node_under.name == "air") and lol(try_node_under_under) then
-								minetest.env:add_node(new_m_pos_under, { name = nname }) --end
-							end
+					local new_m_pos_under_under = {x = new_m_pos.x, y = pos.y - 2, z = new_m_pos.z}
+					local try_node_under_under = minetest.env:get_node(new_m_pos_under_under)
+				--------
+					local new_m_pos_above = {x = new_m_pos.x, y = pos.y + 1, z = new_m_pos.z}
+					local try_node_above = minetest.env:get_node(new_m_pos_above)
+				--------
+					local nname = node.name
+					if (try_node.name == "air") and lol(try_node_under) then
+						minetest.env:add_node(new_m_pos, { name = nname })
+					elseif (try_node_above.name == "air") and lol(try_node) then
+						minetest.env:add_node(new_m_pos_above, { name = nname })
+					elseif (try_node_under.name == "air") and lol(try_node_under_under) then
+						minetest.env:add_node(new_m_pos_under, { name = nname }) --end
+					end
 				end
 			end
+		end
 	})
-	end -- PLUS_MINECRAFT_LIKE_GROW
+	-- PLUS_MINECRAFT_LIKE_GROW
 --^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 	minetest.register_abm({
@@ -176,19 +182,21 @@ for _, color in ipairs(MUSHROOMS) do
 						"mushrooms:dirt_with_grass_spored_mushroom_" .. color},
 		interval = MUSHROOMS_GROW_INTERVAL,
 		chance = CHANCE,
-			action = function(pos, node, _, __)
-if (math.random(1,20) >1) then return 0; end
-				local p_above = {x = pos.x, y = pos.y + 1, z = pos.z}
-				local n_above = minetest.env:get_node(p_above)
-				local l = minetest.env:get_node_light({x = pos.x,y=pos.y+1,z=pos.z}, nil)
-				if (n_above.name == "air") and (l >= NEEDED_LIGHT) then
-					--rnd = math.random(1, 10)
-					--if 1 == 1 then
-						minetest.env:remove_node(p_above)
-						minetest.env:add_node(p_above,{name = "mushrooms:mushroom_" .. color,})
-					--end
-				end
+		action = function(pos, node, _, __)
+			if (math.random(1,20) >1) then
+				return 0
 			end
+			local p_above = {x = pos.x, y = pos.y + 1, z = pos.z}
+			local n_above = minetest.env:get_node(p_above)
+			local l = minetest.env:get_node_light({x = pos.x,y=pos.y+1,z=pos.z}, nil)
+			if (n_above.name == "air") and (l >= NEEDED_LIGHT) then
+				--rnd = math.random(1, 10)
+				--if 1 == 1 then
+					minetest.env:remove_node(p_above)
+					minetest.env:add_node(p_above,{name = "mushrooms:mushroom_" .. color,})
+				--end
+			end
+		end
 	})
 
 	minetest.register_abm({
