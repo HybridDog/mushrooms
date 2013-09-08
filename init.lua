@@ -115,7 +115,7 @@ for _, color in ipairs(MUSHROOMS) do
 	mname = "mushrooms:mushroom_" .. color
 --+++++++++++++++++++++++++++++++++++++
 	if PLUS_MINECRAFT_LIKE_GROW == true then -- PLUS_MINECRAFT_LIKE_GROW
-	minetest.register_abm({  -- WRONG GROW STYLE !!!!!!!1111111111!!!!!!!!!!!!!!!!!!!!!1111!1111111111!!!!!!11111111!
+	minetest.register_abm({	-- WRONG GROW STYLE !!!!!!!1111111111!!!!!!!!!!!!!!!!!!!!!1111!1111111111!!!!!!11111111!
 		nodenames = mname,
 		interval = MUSHROOMS_GROW_INTERVAL,
 		chance = CHANCE,
@@ -148,7 +148,7 @@ for _, color in ipairs(MUSHROOMS) do
 						--------
 							local new_m_pos_under = {x = new_m_pos.x, y = pos.y - 1, z = new_m_pos.z}
 							local try_node_under = minetest.env:get_node(new_m_pos_under)
-						--------  
+						--------	
 
 							local new_m_pos_under_under = {x = new_m_pos.x, y = pos.y - 2, z = new_m_pos.z}
 							local try_node_under_under = minetest.env:get_node(new_m_pos_under_under)
@@ -171,7 +171,7 @@ for _, color in ipairs(MUSHROOMS) do
 --^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 	minetest.register_abm({
-		nodenames = {   "mushrooms:dirt_spored_mushroom_" .. color, 
+		nodenames = {	 "mushrooms:dirt_spored_mushroom_" .. color, 
 						"mushrooms:cobble_spored_mushroom_" .. color,
 						"mushrooms:dirt_with_grass_spored_mushroom_" .. color},
 		interval = MUSHROOMS_GROW_INTERVAL,
@@ -212,7 +212,7 @@ if (math.random(1,5) > 1) then return 0; end
 						n_above.name ~= "mushrooms:dirt_with_grass_spored_mushroom_" .. color and
 						n_above.name ~= "mushrooms:cobble_spored_mushroom_" .. color and
 						n_above.name ~= "mushrooms:mushroom_" .. color
-					   
+						 
 						then replace_node(p,"default:dirt")
 						return true
 						
@@ -276,7 +276,7 @@ if (math.random(1,5) > 1) then return 0; end
 						n_above.name ~= "mushrooms:dirt_with_grass_spored_mushroom_" .. color and
 						n_above.name ~= "mushrooms:cobble_spored_mushroom_" .. color and
 						n_above.name ~= "mushrooms:mushroom_" .. color
-					   
+						 
 						then replace_node(p,"default:cobble")
 						return true
 						
@@ -340,7 +340,7 @@ if (math.random(1,5) > 1) then return 0; end
 						n_above.name ~= "mushrooms:dirt_with_grass_spored_mushroom_" .. color and
 						n_above.name ~= "mushrooms:cobble_spored_mushroom_" .. color and
 						n_above.name ~= "mushrooms:mushroom_" .. color
-					   
+
 						then replace_node(p,"default:dirt_with_grass")
 						return true
 						
